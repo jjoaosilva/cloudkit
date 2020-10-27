@@ -11,7 +11,7 @@ import CloudKit
 
 class Alunos {
     static let recordType = "Alunos"
-    private let id: CKRecord.ID
+    let id: CKRecord.ID
     
     let nome: String?
     let numero: Int?

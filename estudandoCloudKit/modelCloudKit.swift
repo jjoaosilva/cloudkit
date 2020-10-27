@@ -19,6 +19,50 @@ class ModelCloudKit {
         self.publicDatabase = container.publicCloudDatabase
     }
     
+    func createNewRecord() {
+        let aluno = CKRecord(recordType: "Alunos")
+        aluno["Nome"] = "Ze Jao"
+        aluno["Numero"] = 10
+        
+        self.container.privateCloudDatabase.save(aluno) { (record, erro) in
+            print(record, erro)
+        }
+    }
+    
+    func editRecord(aluno: CKRecord) {
+        aluno["Numero"] = 1
+        
+        self.container.privateCloudDatabase.save(aluno) { (record, erro) in
+            print(record, erro)
+        }
+    }
+
+    func delete(aluno: CKRecord.ID) {
+
+        self.container.privateCloudDatabase.delete(withRecordID: aluno) { (record, erro) in
+            print(record, erro)
+        }
+    }
+    
+    func fetchPrivateDB(_ completion: @escaping (CKRecord) -> Void) {
+        let predicate = NSPredicate(value: true)
+        
+        let query = CKQuery(recordType: "Alunos", predicate: predicate)
+        
+        let operation = CKQueryOperation(query: query)
+        operation.zoneID = CKRecordZone.default().zoneID
+        operation.recordFetchedBlock = { record in
+            completion(record)
+        }
+        
+        self.container.privateCloudDatabase.add(operation)
+    }
+    
+//    func addSub() {
+//        let sub = CKSubscription(coder: NSCoder())
+//
+//    }
+
     func fetchAlunos(_ completion: @escaping (Result<[Alunos], Error>) -> Void) {
         let predicate = NSPredicate(value: true)
         

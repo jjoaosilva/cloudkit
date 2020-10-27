@@ -18,10 +18,14 @@ class ViewController: UIViewController {
             }
         }
     }
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.getAlunos()
+//        self.getAlunos()
+//        ModelCloudKit.currentModel.fetchPrivateDB { record in
+//            ModelCloudKit.currentModel.editRecord(aluno: record)
+//        }
+        ModelCloudKit.currentModel.addSub()
         // Do any additional setup after loading the view.
     }
     
@@ -32,6 +36,7 @@ class ViewController: UIViewController {
                 print(error)
             case .success(let data):
                 self.alunos = data
+                ModelCloudKit.currentModel.delete(aluno: self.alunos[0].id)
             }
         })
     }
